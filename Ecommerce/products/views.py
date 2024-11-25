@@ -59,7 +59,7 @@ def detail_product(request,category_slug,product_slug):
     try:
         single_product = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
 
-        in_wishlist = Wishlist.objects.filter(user=request.user, product=single_product).exists()
+        # in_wishlist = Wishlist.objects.filter(user=request.user, product=single_product).exists()
 
         in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product = single_product)
         
@@ -69,7 +69,7 @@ def detail_product(request,category_slug,product_slug):
     context = {
       'single_product' : single_product,
       'in_cart'        : in_cart,
-      'in_wishlist': in_wishlist,
+    #   'in_wishlist': in_wishlist,
     }
 
     return render(request, 'products/productdetails.html',context )
