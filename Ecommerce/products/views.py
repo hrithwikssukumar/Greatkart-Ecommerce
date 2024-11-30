@@ -23,11 +23,8 @@ def index(request):
     }
     return render(request,'home.html',context)
     
-<<<<<<< HEAD
+    
 @login_required(login_url ='signin')
-=======
-
->>>>>>> d8d3cc2de849e562af530613781fe9fd17d134fa
 def list_products(request,category_slug = None):
 
     categories = None
@@ -57,11 +54,8 @@ def list_products(request,category_slug = None):
 
 
 
-<<<<<<< HEAD
-@login_required(login_url ='signin')
-=======
 
->>>>>>> d8d3cc2de849e562af530613781fe9fd17d134fa
+@login_required(login_url ='signin')
 def detail_product(request,category_slug,product_slug):
 
     try:
