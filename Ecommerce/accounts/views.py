@@ -165,35 +165,31 @@ def user_dashboard(request):
 
 def forgot_password(request):
     if request.method == 'POST':
-        email = request.POST['email']
+        email = request.POST.get('email')  # Use `.get()` to avoid potential KeyError
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
 
-            #Reset password email
+            # Reset password email
             current_site = get_current_site(request)
-            mail_subject = "Reset your Password"
-<<<<<<< HEAD
-            message      = render_to_string('accounts/reset_password_email.html',{
-=======
-            message      = render_to_string('reset_password_email.html',{
->>>>>>> d8d3cc2de849e562af530613781fe9fd17d134fa
-
-                'user'   : user,
-                'domain' : current_site,
-                'uid'    : urlsafe_base64_encode(force_bytes(user.pk)),
-                'token'  : default_token_generator.make_token(user),
+            mail_subject = "Reset Your Password"
+            message = render_to_string('accounts/reset_password_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
             })
 
-            to_email   = email
-            send_mail = EmailMessage(mail_subject,message,to=[to_email])
-            send_mail.send()
-            messages.success(request,'Password reset email has been sent to your email address')
+            to_email = email
+            email_message = EmailMessage(mail_subject, message, to=[to_email])
+            email_message.send()
+            messages.success(request, 'Password reset email has been sent to your email address')
             return redirect('signin')
 
         else:
-            messages.error(request,'Account does not exist')  
-            return redirect('forgotpassword')  
-    return render(request,'accounts/forgotpassword.html')   
+            messages.error(request, 'Account does not exist')
+            return redirect('forgotpassword')
+
+    return render(request, 'accounts/forgotpassword.html')  
     
 
 def resetpassword_validate(request,uidb64, token):
