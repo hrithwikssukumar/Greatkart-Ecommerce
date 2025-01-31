@@ -89,13 +89,13 @@ def remove_cart(request, product_id):
 
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
-            cart_item.save()  # Update quantity if more than 1
+            cart_item.save()  
         else:
-            cart_item.delete()  # Remove cart item if quantity is 1
+            cart_item.delete()  
     except CartItem.DoesNotExist:
-        pass  # Handle the case where the cart item does not exist
+        pass  
 
-    return redirect('cart')  # Always redirect to the cart page after removal
+    return redirect('cart') 
 
 def remove_cart_item(request,product_id):
 
