@@ -23,7 +23,6 @@ def user_register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            # Extracting cleaned data from form
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             phone_number = form.cleaned_data['phone_number']
@@ -98,36 +97,29 @@ def user_login(request):
 
         print(f"Trying to authenticate user: {email} with password: {password}")
 
-        # Authenticate the user
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            # Check if the user is an admin
             if user.is_admin:
                 return redirect('admindashboard')
 
             try:
                 print('entering inside try block')
-                # Retrieve the cart using a custom cart ID (assuming _cart_id function exists)
                 cart = Cart.objects.get(cart_id=_cart_id(request))
-                # Check if any cart items exist in the cart
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists() 
                 
                 if is_cart_item_exists:
                     cart_items = CartItem.objects.filter(cart=cart)
                     print('cart_item')
 
-                    # Assign each cart item to the authenticated user
                     for item in cart_items:
                         item.user = user  
                         item.save()
 
             except Cart.DoesNotExist:
                 print('entering inside except block')
-                # If no cart exists, pass silently or handle the error accordingly
                 pass
 
-            # Log in the user and redirect to the home page
             auth.login(request, user)
             messages.success(request, 'You are now logged in')
             
@@ -141,9 +133,7 @@ def user_login(request):
                     return redirect(nextpage)
             except:
                 return redirect('dashboard')
-
         else:
-            # Authentication failed
             print("Authentication failed")
             messages.error(request, 'Invalid credentials')
             return redirect('signin')
@@ -165,11 +155,10 @@ def user_dashboard(request):
 
 def forgot_password(request):
     if request.method == 'POST':
-        email = request.POST.get('email')  # Use `.get()` to avoid potential KeyError
+        email = request.POST.get('email') 
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
 
-            # Reset password email
             current_site = get_current_site(request)
             mail_subject = "Reset Your Password"
             message = render_to_string('accounts/reset_password_email.html', {
