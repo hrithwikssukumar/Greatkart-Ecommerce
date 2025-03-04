@@ -13,8 +13,6 @@ from django.contrib.auth.decorators import login_required
 
 
 
-
-# Create your views here.
 def index(request):
 
     products = Product.objects.all().filter(is_available = True) 
@@ -96,7 +94,7 @@ def product_search(request):
 def wishlist_view(request):
 
     wishlist_items = Wishlist.objects.filter(user=request.user)
-      # Assuming each user has their own wishlist
+      
     return render(request, 'products/wishlist.html', {'wishlist_items': wishlist_items})
 
 
@@ -111,13 +109,13 @@ def add_to_wishlist(request, product_id):
     else:
         messages.info(request, "Product is already in your wishlist.")
     
-    return redirect('add-to-wishlist')  # Adjust 'wishlist' to your
+    return redirect('add-to-wishlist')  
 
 
 def remove_wishlist_item(request, product_id):
-    # Get the item from the wishlist if it exists
+
     wishlist_item = get_object_or_404(Wishlist, user=request.user, product_id=product_id)
     
-    # Delete the item from the wishlist
+    
     wishlist_item.delete()
     return render(request, 'products/wishlist.html')

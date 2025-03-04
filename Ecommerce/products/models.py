@@ -4,7 +4,6 @@ from django.urls import reverse
 from accounts.models import Account
 
 
-# Create your models here.
 
 class Product(models.Model):
     product_name = models.CharField(max_length=200,unique=True)
@@ -26,7 +25,7 @@ class Product(models.Model):
         return self.product_name
     
     def save(self, *args, **kwargs):
-        # Example check: If stock is greater than 0, set is_available to True
+        
         if self.stock > 0:
             self.is_available = True
         else:

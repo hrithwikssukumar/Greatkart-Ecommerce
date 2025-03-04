@@ -10,7 +10,7 @@ from category.models import Category
 from category.forms import CategoryForm
 
 
-# Create your views here.
+
 def admin_dashboard(request):
     return render(request, 'admin/admindashboard.html')
 
@@ -34,7 +34,7 @@ def user_add(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            if not user.username:  # Ensure username is set
+            if not user.username:  
                 user.username = user.email.split('@')[0]
             try:
                 user.save()
@@ -67,9 +67,9 @@ def user_block(request, user_id):
     if request.method == 'POST':  
         try:
             user = get_object_or_404(Account, id=user_id)
-            user.is_active = False  # Block the user by deactivating the account
-            user.save()  # Save the updated status
-            return redirect('admindashboard')  # Redirect after blocking the user
+            user.is_active = False  
+            user.save()  
+            return redirect('admindashboard')  
         except Account.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User does not exist'})
     return redirect('admindashboard')
@@ -92,7 +92,7 @@ def product_add(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('productdashboard')  # Redirect to the admin dashboard or wherever you want
+            return redirect('productdashboard')  
     else:
         form = ProductForm()
     return render(request, 'admin/productadd.html', {'form': form})
@@ -112,7 +112,7 @@ def product_edit(request,id):
 
 
 
-def product_delete(request, id):  # 'id' should match the URL pattern argument
+def product_delete(request, id):  
     product = get_object_or_404(Product, id=id)
     if request.method == 'POST':
         product.delete()
@@ -139,11 +139,11 @@ def category_add(request):
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('categorydashboard')  # Redirect to the category dashboard after adding
+            return redirect('categorydashboard')  
     else:
         form = CategoryForm()
 
-    categories = Category.objects.all()  # Get all categories
+    categories = Category.objects.all()  
     return render(request, 'admin/categoryadd.html', {'categories': categories, 'form': form})
 
     

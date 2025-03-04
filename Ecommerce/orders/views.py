@@ -56,14 +56,14 @@ def place_order(request, total=0, quantity=0):
             data.ip              = request.META.get('REMOTE_ADDR')
             data.save()
 
-            # Generate order number
+            
             yr = int(datetime.date.today().strftime('%Y'))
             dt = int(datetime.date.today().strftime('%d'))
             mt = int(datetime.date.today().strftime('%m'))
             d  = datetime.date(yr, mt, dt)
 
             current_date = d.strftime("%Y%d%m")
-            order_number = current_date + str(data.id)  # Corrected to use 'data.id'
+            order_number = current_date + str(data.id)  
             data.order_number = order_number
             data.save()
 
@@ -111,7 +111,7 @@ def create_checkout_session(request):
                         'product_data': {
                             'name': 'Order Payment',
                         },
-                        'unit_amount': int(grand_total * 100),  # Convert to cents
+                        'unit_amount': int(grand_total * 100),  
                     },
                     'quantity': 1,
                 },
