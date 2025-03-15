@@ -57,7 +57,6 @@ class Variation(models.Model):
 
 
 
-
 class Wishlist(models.Model):
 
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
