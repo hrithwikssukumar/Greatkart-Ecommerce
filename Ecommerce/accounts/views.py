@@ -18,7 +18,6 @@ from django.http import HttpResponse
 import requests
 
 
-
 def user_register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -71,7 +70,6 @@ def user_register(request):
     return render(request, 'accounts/register.html', context)
 
 
-
 def activate_user(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -88,7 +86,6 @@ def activate_user(request, uidb64, token):
         messages.error(request, "Activation link is invalid.")
         return redirect('register')
  
-
 
 def user_login(request):
     if request.method == 'POST':
